@@ -29,6 +29,11 @@
     display: flex;
     justify-content: space-between;
   }
+  .card-container .price
+  {
+    display: flex;
+    justify-content: space-between;
+  }
 
   .card-container .description{
     flex-grow: 1;
