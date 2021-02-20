@@ -24,3 +24,13 @@ export const addToCard = (item) => ({
     type: Action.ADDTO_CART,
     item
 })
+
+export const removeCart = item =>({
+    type: Action.REMOVE_CART,
+    item
+})
+
+export const removeAll = itemID =>({
+    type: Action.REMOVE_ALL,
+    itemID
+})

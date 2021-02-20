@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch,useSelector } from "react-redux";
+import { addToCard, removeAll } from "../../Redux/Action/Action";
 import './pizzacart.css';
 import Modal from 'react-modal';
 
@@ -16,10 +18,12 @@ const customStyles = {
 Modal.setAppElement("#modal")
 
 export const PizzaCart = (props) => {
-    var subtitle;
+    let subtitle;
+    let dispatch = useDispatch();
     const [modalIsOpen, setIsOpen] = useState(false);
     const [size,setSize] = useState([]);
     const [topping,setTopping] = useState([]);
+    const cartItems = useSelector(state => state.cartReducer.cartItems);
     function openModal() {
         setIsOpen(true);
     }
@@ -34,6 +38,12 @@ export const PizzaCart = (props) => {
     }
     const addItem = () =>{
         console.log(size,topping);
+        dispatch(addToCard({...props,size:[...size],toppings:[...topping]}))
+    }
+    const getQuantity = (itemId) => {
+        let cartItem = cartItems.find(cartItem => cartItem.id === itemId);
+        if(cartItem) return cartItem.quantity;
+        return 0;
     }
     return (
         <div className="card-container">
@@ -46,13 +56,14 @@ export const PizzaCart = (props) => {
             <p className="description">{props.description}</p>
             <div className='price'>
                 <p>Rs.{props.price}/-</p>
+                <p>Quantity : {getQuantity(props.id)}</p>
             </div>
 
             <div className="btn-group">
                 <button type="button" className="btn btn-success btn-sm" onClick={openModal}>
                     Add +
                 </button>
-                <button type="button" className="btn btn-warning btn-sm">
+                <button type="button" className="btn btn-warning btn-sm" onClick={() => dispatch(removeAll(props.id))}>
                     Remove -
                 </button>
             </div>
